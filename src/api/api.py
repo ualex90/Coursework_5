@@ -4,7 +4,6 @@ import requests
 class HeadHunterAPI:
     def __init__(self):
         self.employers = list()
-        self.vacancies = list()
 
     def get_employers(self, text):
         url = 'https://api.hh.ru/employers'
