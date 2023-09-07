@@ -15,6 +15,11 @@ class FileManager:
     Работать с файлом возможно передав при инициализации объект Path либо указав название файла.
     Для сохранения файлов передавая только его название,
     необходимо заранее определить путь к дирректории по умолчанию - default_dir
+
+    Доступны следующие методы:
+    load_file() - Чтение файла. Если файл не существует, вернется None
+    save_file(data) - Сохранить данные в файл. Если файл не существует, он будет создан
+    update_file(new_data) - Обновление файла созданного на основе словаря без оборачивания в список
     """
     default_dir = FIXTURES
 
@@ -52,7 +57,7 @@ class FileManager:
             case 'yaml':
                 return self._yaml_load()
 
-    def save_file(self, data) -> None:
+    def save_file(self, data) -> bool:
         """
         Сохранение в файл
         :param data: Исходные данные
@@ -62,24 +67,33 @@ class FileManager:
                 self._json_save(data)
             case 'yaml':
                 self._yaml_save(data)
+        return True
 
-    def update_file(self, new_data: dict) -> None:
+    def update_file(self, new_data) -> bool:
         """
-        Обновление файла. Актуально только для файлов содержащие словари не обернутые в список
-        :param new_data: Новые данные типа dict
+        Обновление файла.
+        :param new_data: Новые данные типа dict либо list
         """
         data = None
         if self.__type == 'json':
             data = self._json_load()
         elif self.__type == 'yaml':
             data = self._yaml_load()
-        if isinstance(data, dict) or data is None:
+        if isinstance(data, dict) and isinstance(new_data, dict):
             data = dict() if data is None else data
             data.update(new_data)
-            if self.__type == 'json':
-                self._json_save(data)
-            elif self.__type == 'yaml':
-                self._yaml_save(data)
+        elif isinstance(data, list) and isinstance(new_data, list):
+            data = list() if data is None else data
+            data.extend(new_data)
+        elif data is None:
+            data = new_data
+        else:
+            raise TypeError("The data type in the file and new_data do not match. Check the new_data type.")
+        if self.__type == 'json':
+            self._json_save(data)
+        elif self.__type == 'yaml':
+            self._yaml_save(data)
+        return True
 
     def _json_load(self):
         """Чтение файла .json"""
@@ -95,13 +109,16 @@ class FileManager:
     def _json_save(self, data, mode='w') -> None:
         """
         Сохранение данных в файл .json. Если файла не существует, он будет создан.
-        :param data: Исходные данные
-        :param mode: Режим переписывания файла "w", дописывания "a"
+        :param data: Исходные данные типа dict или list
+        :param mode: режим переписывания файла "w", дописывания "a"
         """
-        if not Path(self.__file).exists():
-            mode = 'a'
-        with open(self.__file, mode, encoding='UTF-8') as json_file:
-            json.dump(data, json_file, ensure_ascii=False, indent=4)
+        if isinstance(data, dict) or isinstance(data, list):
+            if not Path(self.__file).exists():
+                mode = 'a'
+            with open(self.__file, mode, encoding='UTF-8') as json_file:
+                json.dump(data, json_file, ensure_ascii=False, indent=4)
+        else:
+            raise TypeError('The data must be of type "dict" or "list". Check data to save.')
 
     def _yaml_load(self):
         """Чтение файла .yaml"""
@@ -115,20 +132,30 @@ class FileManager:
     def _yaml_save(self, data, mode='w') -> None:
         """
         Сохранение данных в файл .yaml. Если файла не существует, он будет создан.
-        :param data: Исходные данные
+        :param data: Исходные данные типа dict или list
         :param mode: режим переписывания файла "w", дописывания "a"
         """
-        if not Path(self.__file).exists():
-            mode = 'a'
-        with open(self.__file, mode, encoding="UTF-8") as yaml_file:
-            yaml.safe_dump(data, yaml_file, sort_keys=False, allow_unicode=True)
+        if isinstance(data, dict) or isinstance(data, list):
+            if not Path(self.__file).exists():
+                mode = 'a'
+            with open(self.__file, mode, encoding="UTF-8") as yaml_file:
+                yaml.safe_dump(data, yaml_file, sort_keys=False, allow_unicode=True)
+        else:
+            raise TypeError('The data must be of type "dict" or "list". Check data to save.')
 
     def __repr__(self):
         return f'Path: {self.__file}\nType: {self.__type.upper()}'
 
 
 if __name__ == '__main__':
-    f = FileManager('jik.yaml')
-    f.save_file({'hjk': 8})
-    print(f.load_file())
-    print(f)
+    fd = FileManager('test.yaml')
+    fd.save_file({'qwe': 8})
+    fd.update_file({'zxc': 8})
+    print(fd.load_file())
+    print(fd)
+
+    fl = FileManager('test.yaml')
+    fl.save_file({'qwe': 8})
+    fl.update_file({'zxc': 8})
+    print(fl.load_file())
+    print(fl)
