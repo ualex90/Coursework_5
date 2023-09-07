@@ -9,3 +9,4 @@ api.get_employer_vacancies('1740')
 
 employers_file.save_file(api.employers)
 vacancies_file.save_file(api.vacancies)
+
