@@ -73,4 +73,3 @@ class HeadHunterAPI:
 if __name__ == '__main__':
     x = HeadHunterAPI()
     x.get_employer_vacancies('1740')
-
