@@ -4,19 +4,21 @@ import requests
 class HeadHunterAPI:
     def __init__(self):
         self.employers = list()
+        self.vacancies = list()
 
-    def get_employers(self, text):
+    @staticmethod
+    def get_employers(text):
         url = 'https://api.hh.ru/employers'
         params = {'text': text}
         response = requests.get(url, params=params).json()
-        self.employers.append(response)
-        print(response)
+        return response
 
-    @staticmethod
-    def get_employer_info(employer_id):
+    def get_employer_info(self, employer_id):
         url = f'https://api.hh.ru/employers/{employer_id}'
         params = {}
-        return requests.get(url, params=params).json()
+        response = requests.get(url, params=params).json()
+        self.employers.append(response)
+        return response
 
     def get_vacancies(self, employer_id, page=None, per_page=50, page_limit=None) -> dict:
         """
@@ -62,7 +64,7 @@ class HeadHunterAPI:
                 print(f'\r"{employer_info.get("name")}" - Ok                                        ')
         else:
             print(f'"{employer_info.get("name")}" - Вакансии отсутствуют')
-        # print(vacancies)
+        self.vacancies.append(vacancies)
         # Возврат нормализованного списка
         # return self.normalization_data(vacancies)
 
@@ -70,3 +72,4 @@ class HeadHunterAPI:
 if __name__ == '__main__':
     x = HeadHunterAPI()
     x.get_vacancies(1740)
+
