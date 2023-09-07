@@ -7,20 +7,22 @@ class HeadHunterAPI:
         self.vacancies = list()
 
     @staticmethod
-    def get_employers(text):
+    def get_employers(text: str) -> dict:
+        """Поиск работодателей"""
         url = 'https://api.hh.ru/employers'
         params = {'text': text}
         response = requests.get(url, params=params).json()
         return response
 
-    def get_employer_info(self, employer_id):
+    def get_employer_info(self, employer_id: str) -> dict:
+        """Получение информации о работодателе"""
         url = f'https://api.hh.ru/employers/{employer_id}'
         params = {}
         response = requests.get(url, params=params).json()
         self.employers.append(response)
         return response
 
-    def get_vacancies(self, employer_id, page=None, per_page=50, page_limit=None) -> dict:
+    def get_employer_vacancies(self, employer_id: str, page=None, per_page=50, page_limit=None) -> dict:
         """
         Возвращает список вакансий по запросу.
         Можно за раз получить не более 2000 вакансий
@@ -65,11 +67,10 @@ class HeadHunterAPI:
         else:
             print(f'"{employer_info.get("name")}" - Вакансии отсутствуют')
         self.vacancies.append(vacancies)
-        # Возврат нормализованного списка
-        # return self.normalization_data(vacancies)
+        return vacancies
 
 
 if __name__ == '__main__':
     x = HeadHunterAPI()
-    x.get_vacancies(1740)
+    x.get_employer_vacancies('1740')
 
