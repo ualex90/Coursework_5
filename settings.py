@@ -2,9 +2,15 @@ import os
 from pathlib import Path
 
 
-# Дирректории
+# Корневая директория
 ROOT = Path(__file__).resolve().parent
 
-FIXTURES = Path(ROOT, 'src', 'fixtures')
-if not Path(FIXTURES).exists():
-    FIXTURES.mkdir(parents=True)
+# Директория по умолчанию для сохранения данных
+DATA = Path(ROOT, 'src', 'fixtures')
+if not Path(DATA).exists():
+    DATA.mkdir(parents=True)
+
+# Директория для хранения файлов конфигурации
+CONFIG = Path(ROOT, 'config')
+if not Path(CONFIG).exists():
+    CONFIG.mkdir(parents=True)
