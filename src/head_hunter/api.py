@@ -27,17 +27,30 @@ class HeadHunterAPI:
             return None
         return response
 
-    def add_data(self, employer_id):
+    def add_data(self, employers_id):
         """
         Добавление данных о работодателях и их вакансиях
         Метод исключает повторное добавление работодателя
+
+        :param employers_id: ID работодателей. Одного в формате str, или нескольких list[str]
         """
-        employer = self.get_employer_info(employer_id)
-        vacancies = self.get_employer_vacancies(employer_id)
-        if employer:
-            if employer_id not in self.__employers_id:
-                self.__data.append({'employer': employer, 'vacancies': vacancies})
-                self.__employers_id.append(employer_id)
+        # Проверка типа данных аттрибута employers_id
+        employers_list = list()
+        if isinstance(employers_id, str):
+            employers_list.append(employers_id)
+        elif isinstance(employers_id, list):
+            employers_list = employers_id
+        else:
+            raise TypeError("The data must be of type str or list[str]")
+
+        # Получение данных
+        for employer_id in employers_list:
+            employer = self.get_employer_info(employer_id)
+            vacancies = self.get_employer_vacancies(employer_id, page_limit=1)
+            if employer:
+                if employer_id not in self.__employers_id:
+                    self.__data.append({'employer': employer, 'vacancies': vacancies})
+                    self.__employers_id.append(employer_id)
 
     def get_employers(self, text: str) -> dict:
         """Поиск работодателей"""
