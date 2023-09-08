@@ -20,7 +20,6 @@ class HeadHunterAPI:
     @staticmethod
     def data_request(url, params, headers=None):
         """Запрос данных"""
-        response = None
         try:
             response = requests.get(url, headers=headers, params=params).json()
         except requests.exceptions.ConnectionError:
@@ -55,13 +54,12 @@ class HeadHunterAPI:
             return dict()
         return data
 
-    def get_employer_vacancies(self, employer_id: str, page=None, per_page=50, page_limit=None) -> list:
+    def get_employer_vacancies(self, employer_id: str, per_page=50, page_limit=None) -> list:
         """
         Возвращает список вакансий по запросу.
         Можно за раз получить не более 2000 вакансий
 
         :param employer_id: ID работодателя
-        :param page: Страница ответа
         :param per_page: Количество вакансий на странице (не более 50)
         :param page_limit: Максимальное количество страниц (максимум 40 при per_page=50)
         :return:
@@ -77,7 +75,6 @@ class HeadHunterAPI:
 
         url = 'https://api.hh.ru/vacancies'
         params = {'employer_id': employer_id,
-                  'page': page,
                   'per_page': per_page
                   }
         response = self.data_request(url, params)
@@ -88,7 +85,7 @@ class HeadHunterAPI:
 
         # Перебор страниц и получение данных
         vacancies = list()
-        if page is None:
+        if response.get('pages') > 1:
             params["page"] = 0
             while response.get('page') < page_limit:
                 print(f'\r"{employer_info.get("name")}" - (станица {params["page"] + 1} из {page_limit})', end='')
