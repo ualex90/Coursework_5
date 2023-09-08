@@ -79,12 +79,13 @@ class FileManager:
             data = self._json_load()
         elif self.__type == 'yaml':
             data = self._yaml_load()
-        if isinstance(data, dict) and isinstance(new_data, dict):
-            data = dict() if data is None else data
-            data.update(new_data)
-        elif isinstance(data, list) and isinstance(new_data, list):
-            data = list() if data is None else data
-            data.extend(new_data)
+        if type(data) == type(new_data):
+            if isinstance(data, dict) and isinstance(new_data, dict):
+                data = dict() if data is None else data
+                data.update(new_data)
+            elif isinstance(data, list) and isinstance(new_data, list):
+                data = list() if data is None else data
+                data.extend(new_data)
         elif data is None:
             data = new_data
         else:
@@ -126,7 +127,7 @@ class FileManager:
             with open(self.__file, "r", encoding="UTF-8") as yaml_file:
                 data = yaml.safe_load(yaml_file)
         except FileNotFoundError:
-            pass
+            return None
         return data
 
     def _yaml_save(self, data, mode='w') -> None:
@@ -145,17 +146,3 @@ class FileManager:
 
     def __repr__(self):
         return f'Path: {self.__file}\nType: {self.__type.upper()}'
-
-
-if __name__ == '__main__':
-    fd = FileManager('test.yaml')
-    fd.save_file({'qwe': 8})
-    fd.update_file({'zxc': 8})
-    print(fd.load_file())
-    print(fd)
-
-    fl = FileManager('test.yaml')
-    fl.save_file({'qwe': 8})
-    fl.update_file({'zxc': 8})
-    print(fl.load_file())
-    print(fl)
