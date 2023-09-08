@@ -1,12 +1,19 @@
 from src.head_hunter.api import HeadHunterAPI
 from src.utils.file_manager import FileManager
 
-employers_file = FileManager('employers.yaml')
-vacancies_file = FileManager('vacancies.yaml')
+search_result_file = FileManager('search_result.json')  # Результат поиска работодателей
+employer_file = FileManager('employer.yaml')  # информации о работодателе
+vacancies_file = FileManager('vacancies.yaml')  # вакансии работодателя
 api = HeadHunterAPI()
+employer_id = '2'
 
-api.get_employer_vacancies('1740')
+# Поиск работодателя
+search_result_file.save_file(api.get_employers('skypro'))
 
-employers_file.save_file(api.employers)
-vacancies_file.save_file(api.vacancies)
+# Запрос информации о работодателе
+employer_file.save_file(api.get_employer_info(employer_id))
+
+# Запрос вакансий работодателя
+vacancies_file.save_file(api.get_employer_vacancies(employer_id))
+
 

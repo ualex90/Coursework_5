@@ -3,8 +3,8 @@ import requests
 
 class HeadHunterAPI:
     def __init__(self):
-        self.employers = list()
-        self.vacancies = list()
+        self.employer = dict()
+        self.vacancies = dict()
 
     @staticmethod
     def get_employers(text: str) -> dict:
@@ -14,12 +14,12 @@ class HeadHunterAPI:
         response = requests.get(url, params=params).json()
         return response
 
-    def get_employer_info(self, employer_id: str) -> dict:
+    @staticmethod
+    def get_employer_info(employer_id: str) -> dict:
         """Получение информации о работодателе"""
         url = f'https://api.hh.ru/employers/{employer_id}'
         params = {}
         response = requests.get(url, params=params).json()
-        self.employers.append(response)
         return response
 
     def get_employer_vacancies(self, employer_id: str, page=None, per_page=50, page_limit=None) -> dict:
@@ -33,7 +33,12 @@ class HeadHunterAPI:
         :param page_limit: Максимальное количество страниц (максимум 40 при per_page=50)
         :return:
         """
+
+        # Получение данных о работодателе и проверка на наличии открытых вакансий
         employer_info = self.get_employer_info(employer_id)
+        if not employer_info.get('open_vacancies'):
+            print(f'"{employer_info.get("name")}" - отсутствуют активные вакансии')
+            return dict()
 
         # Инициализация запроса
         print(f'Запрос вакансий "{employer_info.get("name")}"')
@@ -66,7 +71,6 @@ class HeadHunterAPI:
                 print(f'\r"{employer_info.get("name")}" - Ok                                        ')
         else:
             print(f'"{employer_info.get("name")}" - Вакансии отсутствуют')
-        self.vacancies.append(vacancies)
         return vacancies
 
 
