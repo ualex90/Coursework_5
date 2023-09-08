@@ -33,7 +33,7 @@ employer_id = '1740'
 # # Получение работодателей из файла конфигурации
 # employers = config.get_employers()
 
-# Добавление данных
+# Добавление данных в api.data
 # api.add_data('1740')  # "Яндекс"
 # api.add_data('4596113')  # "Фабрика Решений"
 # api.add_data('1204987')  # "Carbon Soft"
@@ -43,5 +43,5 @@ employer_id = '1740'
 # data_file.save_file(api.data)
 
 # Создание новой базы данных
-db_creator.create_db()
+# db_creator.create_db()
 

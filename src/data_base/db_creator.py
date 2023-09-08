@@ -31,9 +31,14 @@ class DBCreator:
                                 password=self.password)
         cursor = conn.cursor()
         conn.autocommit = True
-        cursor.execute(f"CREATE DATABASE {self.db_name}")
-        cursor.close()
-        conn.close()
+        try:
+            cursor.execute(f"CREATE DATABASE {self.db_name}")
+            print(f'База данных "{self.db_name}" успешно создана')
+        except psycopg2.errors.DuplicateDatabase:
+            print(f'База данных "{self.db_name}" уже существует')
+        finally:
+            cursor.close()
+            conn.close()
 
     def create_table(self):
         pass
