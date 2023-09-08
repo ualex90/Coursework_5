@@ -43,5 +43,7 @@ employer_id = '1740'
 # data_file.save_file(api.data)
 
 # Создание новой базы данных
-# db_creator.create_db()
+db_creator.create_db()
 
+# Создание новой таблицы
+db_creator.create_table('employers_table.yaml')

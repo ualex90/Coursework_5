@@ -1,32 +1,33 @@
 import psycopg2
+from pathlib import Path
+
+from settings import TABLES
+from src.utils.file_manager import FileManager
 
 
 class DBCreator:
     """Создание базы данных"""
 
-    def __init__(self, db_name: str, user: str, password: str,
-                 default_dbname='postgres', host='localhost', port='5432') -> None:
+    def __init__(self, db_name: str, user: str, password: str, host='localhost', port='5432') -> None:
         """
         Инициализация
 
         :param db_name: Имя базы данных с которой предстоит работать далее
         :param user: Имя пользователя
         :param password: Пароль
-        :param default_dbname: Имя существующей базы данных (необходимо для первоначального подключения)
         :param host: Адрес сервера
         :param port: Порт сервера
         """
         self.db_name = db_name
         self.user = user
         self.password = password
-        self.default_db_name = default_dbname
         self.host = host
         self.port = port
 
     def create_db(self):
+        """Создать новую базу данных"""
         conn = psycopg2.connect(host=self.host,
                                 port=self.port,
-                                dbname=self.default_db_name,
                                 user=self.user,
                                 password=self.password)
         cursor = conn.cursor()
@@ -40,11 +41,12 @@ class DBCreator:
             cursor.close()
             conn.close()
 
-    def create_table(self):
+    def create_table(self, file):
+        table = FileManager(Path(TABLES, file))
+        print(table.load_file())
+
+    def drop_table(self, table_name):
         pass
 
-    def drop_table(self):
-        pass
-
-    def truncate_table(self):
+    def truncate_table(self, table_name):
         pass
