@@ -1,6 +1,12 @@
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
+
+# Переменные окружения
+load_dotenv()
+USER = os.getenv('USER')
+PASSWORD = os.getenv('PASSWORD')
 
 # Корневая директория
 ROOT = Path(__file__).resolve().parent
