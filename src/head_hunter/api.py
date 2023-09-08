@@ -3,26 +3,29 @@ import requests
 
 class HeadHunterAPI:
     def __init__(self):
-        self.employer = dict()
-        self.vacancies = dict()
+        self.employer_info = dict()
+        self.vacancies = list()
 
     @staticmethod
-    def get_employers(text: str) -> dict:
+    def request_data(url, params, headers=None):
+        response = requests.get(url, headers=headers, params=params).json()
+        return response
+
+    def get_employers(self, text: str) -> dict:
         """Поиск работодателей"""
         url = 'https://api.hh.ru/employers'
         params = {'text': text}
-        response = requests.get(url, params=params).json()
-        return response
+        return self.request_data(url, params)
 
-    @staticmethod
-    def get_employer_info(employer_id: str) -> dict:
+    def get_employer_info(self, employer_id: str) -> dict:
         """Получение информации о работодателе"""
         url = f'https://api.hh.ru/employers/{employer_id}'
         params = {}
-        response = requests.get(url, params=params).json()
-        return response
+        data = self.request_data(url, params)
+        self.employer_info = data
+        return data if data is not None else dict()
 
-    def get_employer_vacancies(self, employer_id: str, page=None, per_page=50, page_limit=None) -> dict:
+    def get_employer_vacancies(self, employer_id: str, page=None, per_page=50, page_limit=None) -> list:
         """
         Возвращает список вакансий по запросу.
         Можно за раз получить не более 2000 вакансий
@@ -38,7 +41,7 @@ class HeadHunterAPI:
         employer_info = self.get_employer_info(employer_id)
         if not employer_info.get('open_vacancies'):
             print(f'"{employer_info.get("name")}" - отсутствуют активные вакансии')
-            return dict()
+            return list()
 
         # Инициализация запроса
         print(f'Запрос вакансий "{employer_info.get("name")}"')
@@ -48,7 +51,7 @@ class HeadHunterAPI:
                   'page': page,
                   'per_page': per_page
                   }
-        response = requests.get(url, params=params).json()
+        response = self.request_data(url, params)
 
         # Определение максимального количества страниц
         if page_limit is None or page_limit > response.get('pages'):
@@ -61,7 +64,7 @@ class HeadHunterAPI:
                 params["page"] = 0
                 while response.get('page') < page_limit:
                     print(f'\rПолучение данных (станица {params["page"] + 1} из {page_limit})', end='')
-                    response = requests.get(url, params).json()
+                    response = self.request_data(url, params)
                     vacancies.extend(response.get('items'))
                     response['page'] += 1
                     params["page"] += 1
@@ -71,7 +74,8 @@ class HeadHunterAPI:
                 print(f'\r"{employer_info.get("name")}" - Ok                                        ')
         else:
             print(f'"{employer_info.get("name")}" - Вакансии отсутствуют')
-        return vacancies
+        self.vacancies = vacancies
+        return vacancies if vacancies is not None else list()
 
 
 if __name__ == '__main__':
