@@ -118,6 +118,8 @@ class FileManager:
                 mode = 'a'
             with open(self.__file, mode, encoding='UTF-8') as json_file:
                 json.dump(data, json_file, ensure_ascii=False, indent=4)
+        elif data is None:
+            return None
         else:
             raise TypeError('The data must be of type "dict" or "list". Check data to save.')
 
@@ -141,6 +143,8 @@ class FileManager:
                 mode = 'a'
             with open(self.__file, mode, encoding="UTF-8") as yaml_file:
                 yaml.safe_dump(data, yaml_file, sort_keys=False, allow_unicode=True)
+        elif data is None:
+            return None
         else:
             raise TypeError('The data must be of type "dict" or "list". Check data to save.')
 

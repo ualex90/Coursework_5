@@ -21,11 +21,13 @@ def test_repr(json_file_none, yaml_file_none):
                                    'tests/test_fixtures/none.yaml\nType: YAML')
 
 
-def test_save_file(json_file_dict, json_file_list, yaml_file_dict, yaml_file_list):
+def test_save_file(json_file_dict, json_file_list, json_file_none, yaml_file_dict, yaml_file_list, yaml_file_none):
     assert json_file_dict.save_file({'jd_0': '0', 'jd_1': '1'})
     assert json_file_list.save_file([{'jL_0': '0_0', 'jL_1': '0_1'}, {'jL_0': '1_0', 'jL_1': '1_1'}])
     assert yaml_file_dict.save_file({'yd_0': '0', 'yd_1': '1'})
     assert yaml_file_list.save_file([{'yL_0': '0_0', 'yL_1': '0_1'}, {'yL_0': '1_0', 'yL_1': '1_1'}])
+    assert json_file_none.save_file(None)
+    assert yaml_file_none.save_file(None)
 
 
 def test_save_file_exception(json_file_dict, yaml_file_dict):
