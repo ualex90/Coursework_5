@@ -4,7 +4,7 @@ from pathlib import Path
 
 import yaml
 
-from settings import FIXTURES
+from settings import DATA
 
 
 class FileManager:
@@ -13,20 +13,19 @@ class FileManager:
     Способен работать с файлами формата json и yaml.
     Тип файла определяется расширением файла получив его название при инициализации.
     Работать с файлом возможно передав при инициализации объект Path либо указав название файла.
-    Для сохранения файлов передавая только его название,
-    необходимо заранее определить путь к дирректории по умолчанию - default_dir
+    Для сохранения файлов передавая только его название, необходимо заранее во внешнем
+    файле конфигурации определить путь к дирректории по умолчанию - DATA
 
     Доступны следующие методы:
     load_file() - Чтение файла. Если файл не существует, вернется None
     save_file(data) - Сохранить данные в файл. Если файл не существует, он будет создан
     update_file(new_data) - Обновление файла yaml или json
     """
-    default_dir = FIXTURES
 
     def __init__(self, file_name) -> None:
         """Инициализация"""
         if isinstance(file_name, str):
-            self.__file = Path(self.default_dir, file_name)
+            self.__file = Path(DATA, file_name)
         elif isinstance(file_name, Path):
             self.__file = file_name
         self.__type = self._selection_type(file_name)
