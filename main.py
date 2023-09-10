@@ -4,15 +4,16 @@ from src.head_hunter.api import HeadHunterAPI
 from src.utils.config import Config
 from src.utils.file_manager import FileManager
 
+api = HeadHunterAPI()  # Объект для работы с API HeadHunter
+config = Config()  # Объект для работы с файлами конфигурации
+
+# -------------------------------Формирование запросов API и сохранение данных------------------------------------------
+
 search_result_file = FileManager('search_result.json')  # Результат поиска работодателей
 employer_file = FileManager('employer.yaml')  # информации о работодателе
 vacancies_file = FileManager('vacancies.yaml')  # вакансии работодателя
 data_file = FileManager('data.yaml')  # собранные данные о работодателях и их вакансиях
-api = HeadHunterAPI()  # Объект для работы с API HeadHunter
-config = Config()  # Объект для работы с файлами конфигурации
-db_creator = DBCreator('headhunter', USER, PASSWORD)  # Объект для создания базы данных
 employer_id = '1740'
-
 
 # # Поиск работодателя
 # search_result_file.save_file(api.get_employers('yandex'))
@@ -30,7 +31,7 @@ employer_id = '1740'
 #              "Группа Компаний РУСАГРО": '23186'}
 # config.add_employers(employers)
 #
-# # Получение работодателей из файла конфигурации
+# Получение работодателей из файла конфигурации
 # employers = config.get_employers()
 
 # Добавление данных в api.data
@@ -42,8 +43,21 @@ employer_id = '1740'
 # api.add_data(list(employers.values()))
 # data_file.save_file(api.data)
 
+# -------------------------------Создание и удаление базы данных и ее таблиц--------------------------------------------
+
+db_creator = DBCreator('headhunter', USER, PASSWORD)  # Объект для создания базы данных
+
 # Создание новой базы данных
 db_creator.create_db()
 
 # Создание новой таблицы
 db_creator.create_table('employers_table.yaml')
+db_creator.create_table('vacancies_table.yaml')
+
+# # Удаление данных из таблицы
+# db_creator.truncate_table('vacancies')
+# db_creator.truncate_table('employers')
+
+# # Удаление таблицы
+# db_creator.drop_table('vacancies')
+# db_creator.drop_table('employers')
