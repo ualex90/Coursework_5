@@ -3,19 +3,6 @@ import requests
 
 class HeadHunterAPI:
     """Получение данных о работодателях и их вакансиях"""
-    def __init__(self):
-        self.__employers_id = list()
-        self.__data = list()
-
-    @property
-    def data(self):
-        """Сведения о работодателях и их вакансиях"""
-        return self.__data
-
-    @property
-    def employers_id(self):
-        """Список добавленных работодателей"""
-        return self.__employers_id
 
     @staticmethod
     def data_request(url, params, headers=None):
@@ -26,31 +13,6 @@ class HeadHunterAPI:
             print('Сервер не доступен')
             return None
         return response
-
-    def add_data(self, employers_id):
-        """
-        Добавление данных о работодателях и их вакансиях
-        Метод исключает повторное добавление работодателя
-
-        :param employers_id: ID работодателей. Одного в формате str, или нескольких list[str]
-        """
-        # Проверка типа данных аттрибута employers_id
-        employers_list = list()
-        if isinstance(employers_id, str):
-            employers_list.append(employers_id)
-        elif isinstance(employers_id, list):
-            employers_list = employers_id
-        else:
-            raise TypeError("The data must be of type str or list[str]")
-
-        # Получение данных
-        for employer_id in employers_list:
-            employer = self.get_employer_info(employer_id)
-            vacancies = self.get_employer_vacancies(employer_id, page_limit=1)
-            if employer:
-                if employer_id not in self.__employers_id:
-                    self.__data.append({'employer': employer, 'vacancies': vacancies})
-                    self.__employers_id.append(employer_id)
 
     def get_employers(self, text: str) -> dict:
         """Поиск работодателей"""
@@ -112,8 +74,38 @@ class HeadHunterAPI:
             print(f'\r"{employer_info.get("name")}" - Получено {len(vacancies)} вакансий                 ')
         return vacancies if vacancies is not None else list()
 
+    def get_table_data(self, employers_id):
+        """
+        Добавление данных о работодателях и их вакансиях
+        Метод исключает повторное добавление работодателя
+
+        :param employers_id: ID работодателей. Одного в формате str, или нескольких list[str]
+        """
+        # Проверка типа данных аттрибута employers_id
+        employers_list = list()
+        if isinstance(employers_id, str):
+            employers_list.append(employers_id)
+        elif isinstance(employers_id, list):
+            employers_list = employers_id
+        else:
+            raise TypeError("The data must be of type str or list[str]")
+
+        # Получение данных
+        table_data = dict()
+        employers_id = list()
+        employer_table = list()
+        vacancies_table = list()
+        for employer_id in employers_list:
+            employer = self.get_employer_info(employer_id)
+            vacancies = self.get_employer_vacancies(employer_id, page_limit=1)
+            if employer:
+                if employer_id not in employers_id:
+                    employer_table.append('')
+                    vacancies_table.append('')
+        return table_data
+
     def __str__(self):
-        return f'Содержит {len(self.__data)} записей о работодателях'
+        return f'Объект для работы с API HeadHunter'
 
 
 if __name__ == '__main__':

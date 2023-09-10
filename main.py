@@ -35,12 +35,12 @@ employer_id = '1740'
 # employers = config.get_employers()
 
 # Добавление данных в api.data
-# api.add_data('1740')  # "Яндекс"
-# api.add_data('4596113')  # "Фабрика Решений"
-# api.add_data('1204987')  # "Carbon Soft"
-# api.add_data('23186')  # "Группа Компаний РУСАГРО"
-# api.add_data(['1740', '4596113', '1204987', '23186'])
-# api.add_data(list(employers.values()))
+# table_data = api.get_table_data('1740')  # "Яндекс"
+# table_data = api.get_table_data('4596113')  # "Фабрика Решений"
+# table_data = api.get_table_data('1204987')  # "Carbon Soft"
+# table_data = api.get_table_data('23186')  # "Группа Компаний РУСАГРО"
+# table_data = api.get_table_data(['1740', '4596113', '1204987', '23186'])
+# table_data = api.get_table_data(list(employers.values()))
 # data_file.save_file(api.data)
 
 # -------------------------------Создание и удаление базы данных и ее таблиц--------------------------------------------
