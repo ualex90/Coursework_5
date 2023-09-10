@@ -74,9 +74,9 @@ class HeadHunterAPI:
             print(f'\r"{employer_info.get("name")}" - Получено {len(vacancies)} вакансий                 ')
         return vacancies if vacancies is not None else list()
 
-    def get_table_data(self, employers_id):
+    def get_table_data(self, employers_id) -> dict:
         """
-        Добавление данных о работодателях и их вакансиях
+        Получение табличных данных о работодателях и их вакансиях
         Метод исключает повторное добавление работодателя
 
         :param employers_id: ID работодателей. Одного в формате str, или нескольких list[str]
@@ -90,7 +90,7 @@ class HeadHunterAPI:
         else:
             raise TypeError("The data must be of type str or list[str]")
 
-        # Получение данных
+        # Получение табличных данных
         table_data = dict()
         employers_id = list()
         employer_table = list()
