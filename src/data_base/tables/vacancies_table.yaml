@@ -12,9 +12,8 @@ columns:
     'constraints':
       'name': 'fk_vacancies_employers'
       'type': 'foreign_key'
-      'referenced_table': 'employers'
-      'column_from': 'employer_id'
-      'column_to': 'employer_id'
+      'parent_table': 'employers'
+      'parent_key_columns': 'employer_id'
   - 'name': 'name'
     'data_type': 'varchar(30)'
     'is_note_null': true
