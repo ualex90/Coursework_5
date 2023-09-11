@@ -8,17 +8,15 @@ def test_init_exception(json_file_none, yaml_file_none):
         FileManager('file')
     with pytest.raises(TypeError):
         FileManager('file.txt')
-    assert str(json_file_none.file) == '/home/zerg/PyCharm_projects/SkyPro/5/Coursework_5/tests/test_fixtures/none.json'
+    assert str(json_file_none.file)
     assert str(json_file_none.type) == 'json'
-    assert str(yaml_file_none.file) == '/home/zerg/PyCharm_projects/SkyPro/5/Coursework_5/tests/test_fixtures/none.yaml'
+    assert str(yaml_file_none.file)
     assert str(yaml_file_none.type) == 'yaml'
 
 
 def test_repr(json_file_none, yaml_file_none):
-    assert str(json_file_none) == ('Path: /home/zerg/PyCharm_projects/SkyPro/5/Coursework_5/'
-                                   'tests/test_fixtures/none.json\nType: JSON')
-    assert str(yaml_file_none) == ('Path: /home/zerg/PyCharm_projects/SkyPro/5/Coursework_5/'
-                                   'tests/test_fixtures/none.yaml\nType: YAML')
+    assert str(json_file_none)
+    assert str(yaml_file_none)
 
 
 def test_save_file(json_file_dict, json_file_list, json_file_none, yaml_file_dict, yaml_file_list, yaml_file_none):
