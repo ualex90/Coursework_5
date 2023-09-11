@@ -74,7 +74,7 @@ class HeadHunterAPI:
             print(f'\r"{employer_info.get("name")}" - Получено {len(vacancies)} вакансий                 ')
         return vacancies if vacancies is not None else list()
 
-    def get_table_data(self, employers_id) -> dict:
+    def get_table_data(self, employers_id) -> list:
         """
         Получение табличных данных о работодателях и их вакансиях
         Метод исключает повторное добавление работодателя
@@ -90,19 +90,46 @@ class HeadHunterAPI:
         else:
             raise TypeError("The data must be of type str or list[str]")
 
-        # Получение табличных данных
-        table_data = dict()
+        # Получение табличных данных и сборка их в единый список
+        table_data = list()
         employers_id = list()
-        employer_table = list()
-        vacancies_table = list()
         for employer_id in employers_list:
             employer = self.get_employer_info(employer_id)
-            vacancies = self.get_employer_vacancies(employer_id, page_limit=1)
+            vacancies = self.get_employer_vacancies(employer_id, page_limit=None)
             if employer:
                 if employer_id not in employers_id:
-                    employer_table.append('')
-                    vacancies_table.append('')
+                    employers_id.append(employer_id)
+                    table_data.append(self.normalize_data(employer, vacancies))
         return table_data
+
+    @staticmethod
+    def normalize_data(employer: dict, vacancies: list) -> dict:
+        """
+        Выборка полученных данных по API и формирование нормализованного
+        словаря содержащего работодателя и его вакансий
+        """
+        # формирование табличных данных работодателя
+        employer_tab = [{'employer_id': int(employer.get('id')),
+                         'name': employer.get('name'),
+                         'area': employer.get('area').get('name'),
+                         'site_url': employer.get('site_url'),
+                         'description': employer.get('description')}]
+
+        # формирование табличных данных вакансий работодателя
+        vacancies_tab = list()
+        for vacancy in vacancies:
+            vacancies_tab.append({'vacancy_id': int(vacancy.get('id')),
+                                  'employer_id': int(employer.get('id')),
+                                  'name': vacancy.get('name'),
+                                  'area': vacancy.get('area').get('name'),
+                                  'salary_from': vacancy.get('salary').get('from') if vacancy.get('salary') else None,
+                                  'salary_to': vacancy.get('salary').get('to') if vacancy.get('salary') else None,
+                                  'currency': vacancy.get('salary').get('currency') if vacancy.get('salary') else None,
+                                  'url': vacancy.get('url'),
+                                  'requirement': vacancy.get('snippet').get('requirement'),
+                                  'responsibility': vacancy.get('snippet').get('responsibility')
+                                  })
+        return {'employers': employer_tab, 'vacancies': vacancies_tab}
 
     def __str__(self):
         return f'Объект для работы с API HeadHunter'
