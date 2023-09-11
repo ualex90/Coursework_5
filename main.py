@@ -32,7 +32,7 @@ employer_id = '1740'
 # config.add_employers(employers)
 #
 # Получение работодателей из файла конфигурации
-# employers = config.get_employers()
+employers = config.get_employers()
 
 # Добавление данных в api.data
 # table_data = api.get_table_data('1740')  # "Яндекс"
@@ -40,24 +40,29 @@ employer_id = '1740'
 # table_data = api.get_table_data('1204987')  # "Carbon Soft"
 # table_data = api.get_table_data('23186')  # "Группа Компаний РУСАГРО"
 # table_data = api.get_table_data(['1740', '4596113', '1204987', '23186'])
-# table_data = api.get_table_data(list(employers.values()))
-# data_file.save_file(api.data)
+table_data = api.get_table_data(list(employers.values()))
+# data_file.save_file(table_data)
 
 # -------------------------------Создание и удаление базы данных и ее таблиц--------------------------------------------
 
 db_creator = DBCreator('headhunter', USER, PASSWORD)  # Объект для создания базы данных
 
 # Создание новой базы данных
-db_creator.create_db()
+# db_creator.create_db()
 
 # Создание новой таблицы
-db_creator.create_table('employers_table.yaml')
-db_creator.create_table('vacancies_table.yaml')
+# db_creator.create_table('employers_table.yaml')
+# db_creator.create_table('vacancies_table.yaml')
 
 # # Удаление данных из таблицы
 # db_creator.truncate_table('vacancies')
 # db_creator.truncate_table('employers')
-
+#
 # # Удаление таблицы
 # db_creator.drop_table('vacancies')
 # db_creator.drop_table('employers')
+
+# -----------------------------------------Заполнение таблиц данными----------------------------------------------------
+
+# заполнение таблиц данными
+db_creator.fill_table(table_data)

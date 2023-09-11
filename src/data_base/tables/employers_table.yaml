@@ -1,21 +1,21 @@
 name: 'employers'
 columns:
   - 'name': 'employer_id'
-    'data_type': 'smallint'
+    'data_type': 'int'
     'is_note_null': true
     'constraints':
       'name': 'pk_employer'
       'type': 'primary_key'
   - 'name': 'name'
-    'data_type': 'varchar(30)'
+    'data_type': 'varchar(100)'
     'is_note_null': true
     'constraints': null
   - 'name': 'area'
-    'data_type': 'varchar(30)'
+    'data_type': 'varchar(100)'
     'is_note_null': false
     'constraints': null
   - 'name': 'site_url'
-    'data_type': 'varchar(50)'
+    'data_type': 'varchar(100)'
     'is_note_null': false
     'constraints': null
   - 'name': 'description'

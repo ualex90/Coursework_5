@@ -1,13 +1,13 @@
 name: 'vacancies'
 columns:
   - 'name': 'vacancy_id'
-    'data_type': 'smallint'
+    'data_type': 'int'
     'is_note_null': true
     'constraints':
       'name': 'pk_vacancy'
       'type': 'primary_key'
   - 'name': 'employer_id'
-    'data_type': 'smallint'
+    'data_type': 'int'
     'is_note_null': true
     'constraints':
       'name': 'fk_vacancies_employers'
@@ -15,28 +15,40 @@ columns:
       'parent_table': 'employers'
       'parent_key_columns': 'employer_id'
   - 'name': 'name'
-    'data_type': 'varchar(30)'
+    'data_type': 'varchar(100)'
     'is_note_null': true
     'constraints': null
   - 'name': 'area'
-    'data_type': 'varchar(30)'
+    'data_type': 'varchar(100)'
     'is_note_null': false
     'constraints': null
   - 'name': 'salary_from'
-    'data_type': 'smallint'
+    'data_type': 'int'
     'is_note_null': false
     'constraints':
       'type': 'check'
       'name': 'chk_vacancies_salary_from'
       'check': 'salary_from >= 0'
   - 'name': 'salary_to'
-    'data_type': 'smallint'
+    'data_type': 'int'
     'is_note_null': false
     'constraints':
       'type': 'check'
       'name': 'chk_vacancies_salary_to'
       'check': 'salary_to >= 0'
+  - 'name': 'currency'
+    'data_type': 'varchar(5)'
+    'is_note_null': false
+    'constraints': null
   - 'name': 'url'
-    'data_type': 'varchar(30)'
+    'data_type': 'varchar(100)'
+    'is_note_null': false
+    'constraints': null
+  - 'name': 'requirement'
+    'data_type': 'text'
+    'is_note_null': false
+    'constraints': null
+  - 'name': 'responsibility'
+    'data_type': 'text'
     'is_note_null': false
     'constraints': null
