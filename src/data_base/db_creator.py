@@ -136,5 +136,26 @@ class DBCreator:
         finally:
             conn.close()
 
-    def fill_table(self):
-        pass
+    def fill_table(self, data):
+        conn = psycopg2.connect(
+            host=self.host,
+            port=self.port,
+            dbname=self.db_name,
+            user=self.user,
+            password=self.password)
+        try:
+            with conn:
+                for tables in data:
+                    for table, lines in tables.items():
+                        with conn.cursor() as cursor:
+                            records_list_template = ', '.join(['%s'] * len(lines[0]))
+                            try:
+                                cursor.executemany(f'INSERT INTO {table} ' # Проработать вопрос по использыванию execute с целью отлавливания дубликатов
+                                                   f'VALUES ({records_list_template})',
+                                                   map(lambda x: tuple(x.values()), lines))
+                            except psycopg2.errors.UniqueViolation:
+                                pass
+
+                print(f'Данные успешно добавлены в базу данных')
+        finally:
+            conn.close()
