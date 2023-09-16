@@ -35,7 +35,12 @@ def ui_main():
                 utils.clear_screen()
                 print("Попытка соединения...")
                 if not db_creator.create_db():
-                    input('Ошибка соединения. Нажмите "ENTER')
+                    input('Ошибка соединения. Нажмите "ENTER"')
+                else:
+                    message = f'Соединение с базой данных {config.get_server()["db_name"]} установлено'
+                    print(message)
+                    print('-' * len(message))
+                    input('Нажмите "ENTER"')
             case '2':
                 utils.clear_screen()
                 if not db:
