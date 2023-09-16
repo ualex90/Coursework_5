@@ -8,7 +8,8 @@ from src.utils.file_manager import FileManager
 class DBCreator:
     """Создание базы данных"""
 
-    def __init__(self, db_name: str, user: str, password: str, host='localhost', port='5432') -> None:
+    def __init__(self, db_name: str = None, user: str = None,
+                 password: str = None, host='localhost', port='5432') -> None:
         """
         Инициализация
 
@@ -35,9 +36,13 @@ class DBCreator:
         conn.autocommit = True
         try:
             cursor.execute(f"CREATE DATABASE {self.db_name}")
-            print(f'Создана база данных "{self.db_name}"')
+            message = f'Создана база данных "{self.db_name}"'
+            print(message)
+            print('-' * len(message))
         except psycopg2.errors.DuplicateDatabase:
-            print(f'База данных "{self.db_name}" уже существует')
+            message = f'База данных "{self.db_name}" уже существует'
+            print(message)
+            print('-' * len(message))
         finally:
             cursor.close()
             conn.close()
@@ -56,9 +61,13 @@ class DBCreator:
                 with conn.cursor() as cursor:
                     try:
                         cursor.execute(create_table_instruction)
-                        print(f'Создана таблица "{table.get("name")}" из файла "{file}"')
+                        message = f'Создана таблица "{table.get("name")}" из файла "{file}"'
+                        print(message)
+                        print('-' * len(message))
                     except psycopg2.errors.DuplicateTable:
-                        print(f'Таблица "{table.get("name")}" уже существует')
+                        message = f'Таблица "{table.get("name")}" уже существует'
+                        print(message)
+                        print('-' * len(message))
         finally:
             conn.close()
 
@@ -112,9 +121,13 @@ class DBCreator:
                 with conn.cursor() as cursor:
                     try:
                         cursor.execute(f'TRUNCATE TABLE {table_name} RESTART IDENTITY CASCADE')
-                        print(f'Удалены данные из таблицы "{table_name}"')
+                        message = f'Удалены данные из таблицы "{table_name}"'
+                        print(message)
+                        print('-' * len(message))
                     except psycopg2.errors.UndefinedTable:
-                        print(f'Таблица "{table_name}" не существует')
+                        message = f'Таблица "{table_name}" не существует'
+                        print(message)
+                        print('-' * len(message))
         finally:
             conn.close()
 
@@ -130,9 +143,13 @@ class DBCreator:
                 with conn.cursor() as cursor:
                     try:
                         cursor.execute(f'DROP TABLE {table_name}')
-                        print(f'Удалена таблица "{table_name}"')
+                        message = f'Удалена таблица "{table_name}"'
+                        print(message)
+                        print('-' * len(message))
                     except psycopg2.errors.UndefinedTable:
-                        print(f'Таблица "{table_name}" не существует')
+                        message = f'Таблица "{table_name}" не существует'
+                        print(message)
+                        print('-' * len(message))
         finally:
             conn.close()
 
