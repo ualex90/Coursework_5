@@ -9,7 +9,7 @@ from src.utils.config import Config
 db = dict()
 
 
-def main_menu():
+def ui_main():
     # Создание объектов для работы с конфигурацией и утилитами UI
     config = Config()
     utils = UIUtils()
@@ -56,4 +56,4 @@ def main_menu():
 
 
 if __name__ == '__main__':
-    main_menu()
+    ui_main()
