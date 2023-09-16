@@ -47,6 +47,9 @@ employer_id = '1740'
 
 db_creator = DBCreator('headhunter', USER, PASSWORD)  # Объект для создания базы данных
 
+# Проверка статуса базы данных
+# print(db_creator.db_status())
+
 # Создание новой базы данных
 # db_creator.create_db()
 
