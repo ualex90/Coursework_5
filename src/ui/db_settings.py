@@ -1,9 +1,9 @@
-from main import db_creator
+from src.data_base.db_creator import DBCreator
 from src.head_hunter.api import HeadHunterAPI
 from src.ui.ui_utils import UIUtils
 
 
-def db_settings(utils: UIUtils, employers: dict, api: HeadHunterAPI):
+def db_settings(utils: UIUtils, db_creator: DBCreator, employers: dict, api: HeadHunterAPI):
     while True:
         menu_list = ['Создать таблицу "vacancies"',
                      'Создать таблицу "employers"',
