@@ -173,6 +173,8 @@ class DBCreator:
                             except psycopg2.errors.UniqueViolation:
                                 pass
 
-                print(f'Данные успешно добавлены в базу данных')
+                message = f'Данные успешно добавлены в базу'
+                print(message)
+                print('-' * len(message))
         finally:
             conn.close()
