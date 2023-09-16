@@ -1,14 +1,15 @@
+from src.data_base.db_creator import DBCreator
 from src.ui.ui_utils import UIUtils
 from src.utils.config import Config
 
 
-def add_server(utils: UIUtils, config: Config) -> dict:
+def db_connect(utils: UIUtils, config: Config) -> dict:
     """Получение данных о сервере"""
     server = config.get_server()
 
     # получение данных сохраненного сервера
     if tuple(server.keys()) == ('host', 'port', 'user', 'password', 'db_name'):
-        answer = input(f'Подключиться к введенному ранее серверу "{server["address"]}"? (y/n) ')
+        answer = input(f'Подключиться к введенному ранее серверу "{server["host"]}"? (y/n) ')
         if answer.strip().lower() == 'y' or answer.strip().lower() == 'д' or answer.strip().lower() == '':
             return server
 
@@ -39,7 +40,7 @@ def add_server(utils: UIUtils, config: Config) -> dict:
     password = input('Пароль: ')
     utils.clear_screen()
 
-    print('Введите имя для базы данных для HeadHunter')
+    print('Введите имя для базы данных для HeadHunter (по умолчанию "headhunter")')
     db_name = input("Имя базы данных: ").strip().lower()
     if not db_name:
         db_name = "headhunter"
