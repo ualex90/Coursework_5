@@ -6,7 +6,6 @@ from src.utils.file_manager import FileManager
 
 class Config:
     def __init__(self) -> None:
-        self.employers = dict()
         self.employers = FileManager(Path(CONFIG, 'employers.yaml'))
         self.server = FileManager(Path(CONFIG, 'server.yaml'))
 
@@ -23,7 +22,7 @@ class Config:
         self.server.save_file(data)
 
     def get_server(self) -> dict:
-        data = self.employers.load_file()
+        data = self.server.load_file()
         if data is None:
             return dict()
         return data
