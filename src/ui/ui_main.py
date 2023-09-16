@@ -2,6 +2,7 @@ from src.data_base.db_creator import DBCreator
 from src.head_hunter.api import HeadHunterAPI
 from src.ui.add_server import db_connect
 from src.ui.db_settings import db_settings
+from src.ui.employers_list import employers_list
 from src.ui.ui_utils import UIUtils
 from src.utils.config import Config
 
@@ -45,7 +46,8 @@ def main_menu():
                     utils.clear_screen()
                 db_settings(utils, db_creator, employers, api)
             case '3':
-                pass
+                utils.clear_screen()
+                employers_list(utils, config)
             case '4':
                 pass
             case '5':
