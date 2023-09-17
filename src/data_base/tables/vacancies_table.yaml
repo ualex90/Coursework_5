@@ -14,7 +14,7 @@ columns:
       'type': 'foreign_key'
       'parent_table': 'employers'
       'parent_key_columns': 'employer_id'
-  - 'name': 'name'
+  - 'name': 'vacancy_name'
     'data_type': 'varchar(100)'
     'is_note_null': true
     'constraints': null

@@ -110,7 +110,7 @@ class HeadHunterAPI:
         """
         # формирование табличных данных работодателя
         employer_tab = [{'employer_id': int(employer.get('id')),
-                         'name': employer.get('name'),
+                         'employer_name': employer.get('name'),
                          'area': employer.get('area').get('name'),
                          'site_url': employer.get('site_url'),
                          'description': employer.get('description')}]
@@ -120,7 +120,7 @@ class HeadHunterAPI:
         for vacancy in vacancies:
             vacancies_tab.append({'vacancy_id': int(vacancy.get('id')),
                                   'employer_id': int(employer.get('id')),
-                                  'name': vacancy.get('name'),
+                                  'employer_name': vacancy.get('name'),
                                   'area': vacancy.get('area').get('name'),
                                   'salary_from': vacancy.get('salary').get('from') if vacancy.get('salary') else None,
                                   'salary_to': vacancy.get('salary').get('to') if vacancy.get('salary') else None,

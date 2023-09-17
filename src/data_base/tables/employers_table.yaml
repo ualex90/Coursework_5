@@ -6,7 +6,7 @@ columns:
     'constraints':
       'name': 'pk_employer'
       'type': 'primary_key'
-  - 'name': 'name'
+  - 'name': 'employer_name'
     'data_type': 'varchar(100)'
     'is_note_null': true
     'constraints': null
