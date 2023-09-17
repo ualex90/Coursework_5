@@ -140,7 +140,7 @@ class HeadHunterAPI:
                                   'salary_from': salary_from,
                                   'salary_to': salary_to,
                                   'currency': vacancy.get('salary').get('currency') if vacancy.get('salary') else None,
-                                  'url': vacancy.get('url'),
+                                  'url': vacancy.get('alternate_url'),
                                   'requirement': vacancy.get('snippet').get('requirement'),
                                   'responsibility': vacancy.get('snippet').get('responsibility')
                                   })
