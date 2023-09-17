@@ -62,3 +62,9 @@ SELECT vacancies.vacancy_name,
 FROM vacancies
 JOIN employers USING(employer_id)
 ORDER BY vacancy_name;
+
+-- get_avg_salary()
+SELECT CONCAT(ROUND(AVG(salary_to)), ' ', currency)
+FROM vacancies
+WHERE currency = 'RUR'
+GROUP BY currency;

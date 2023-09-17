@@ -43,19 +43,25 @@ class DBManager(DB):
         """
         Получает среднюю зарплату по вакансиям
         """
-        pass
+        instruction = ("SELECT CONCAT(ROUND(AVG(salary_to)), ' ', currency) "
+                       "FROM vacancies "
+                       "WHERE currency = 'RUR' "
+                       "GROUP BY currency;")
+        return self._request(instruction)
 
     def get_vacancies_with_higher_salary(self):
         """
         Получает список всех вакансий, у которых зарплата выше
         средней по всем вакансиям
         """
-        pass
+        instruction = ("")
+        return self._request(instruction)
 
     def get_vacancies_with_keyword(self, keyword: str):
         """
         Получает список всех вакансий, в названии которых содержатся
         переданные в метод слова, например python
         """
-        pass
+        instruction = ("")
+        return self._request(instruction)
 

@@ -22,10 +22,12 @@ def ui_db_manager(utils: UIUtils, db_manager: DBManager):
                 create_table(utils, columns, data)
             case '2':
                 data = db_manager.get_all_vacancies()
-                columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 47)]
+                columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
                 create_table(utils, columns, data)
             case '3':
-                pass
+                data = db_manager.get_avg_salary()
+                columns = [('Средняя зарплата', 16)]
+                create_table(utils, columns, data)
             case '4':
                 pass
             case '5':
@@ -56,7 +58,7 @@ def create_table(utils, columns: list, data: list):
             item = data[data_start]
             string_list = list()
             for i, j in zip(item, columns):
-                if isinstance(i, int):
+                if str(i).isdigit():
                     string_list.append(f'{i:^{j[1]}}')
                 else:
                     string_list.append(f'{(f"{i[:(j[1] - 4)]}..." if len(i) > j[1] else i):<{j[1]}}')
