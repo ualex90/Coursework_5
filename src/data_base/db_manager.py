@@ -1,5 +1,3 @@
-import psycopg2
-
 from src.data_base.db import DB
 
 
@@ -18,13 +16,15 @@ class DBManager(DB):
                 conn.close()
         return response
 
-    def get_companies_and_vacancies_count(self):
+    def get_companies_and_vacancies_count(self) -> list[tuple]:
         """
         Получает список всех компаний и количество вакансий
         у каждой компании
         """
-        instruction = 'SELECT * FROM employers'
-        print(self._request(instruction))
+        instruction = ('SELECT employer_name, COUNT(*) '
+                       'FROM employers JOIN vacancies USING(employer_id) '
+                       'GROUP BY employer_name;')
+        return self._request(instruction)
 
     def get_all_vacancies(self):
         """

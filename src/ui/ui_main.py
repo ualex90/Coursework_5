@@ -1,13 +1,16 @@
 from src.data_base.db_creator import DBCreator
+from src.data_base.db_manager import DBManager
 from src.head_hunter.api import HeadHunterAPI
 from src.ui.add_server import db_connect
 from src.ui.db_settings import db_settings
 from src.ui.employers_list import employers_list
+from src.ui.ui_db_manager import ui_db_manager
 from src.ui.ui_utils import UIUtils
 from src.utils.config import Config
 
 db = dict()
-db_creator = None
+db_creator = DBCreator()
+db_manager = DBManager()
 
 
 def ui_main():
@@ -21,27 +24,18 @@ def ui_main():
         # главное меню
         global db
         global db_creator
+        global db_manager
         utils.clear_screen()
         menu_list = ['Подключение к базе данных',
                      'Управление базой данных',
                      'Список работодателей',
-                     'Получение данных',
+                     'Запросы к базе данных',
                      'Выход из программы']
         [print(f"{i + 1}. {menu_list[i]}") for i in range(len(menu_list))]
         match input('>> ').strip():
             case '1':
                 utils.clear_screen()
-                db = db_connect(utils, config)
-                db_creator = DBCreator(**db)
-                utils.clear_screen()
-                print("Попытка соединения...")
-                if not db_creator.create_db():
-                    input('Ошибка соединения. Нажмите "ENTER"')
-                else:
-                    message = f'Соединение с базой данных {config.get_server()["db_name"]} установлено'
-                    print(message)
-                    print('-' * len(message))
-                    input('Нажмите "ENTER"')
+                connect_db(utils, config)
             case '2':
                 utils.clear_screen()
                 connect_db(utils, config)
@@ -51,7 +45,9 @@ def ui_main():
                 connect_db(utils, config)
                 employers_list(utils, db_creator, config, api)
             case '4':
-                pass
+                utils.clear_screen()
+                connect_db(utils, config)
+                ui_db_manager(utils, db_manager)
             case '5':
                 utils.clear_screen()
                 return
@@ -60,12 +56,20 @@ def ui_main():
 def connect_db(utils: UIUtils, config: Config):
     global db
     global db_creator
+    global db_manager
     if not db:
         db = db_connect(utils, config)
         db_creator = DBCreator(**db)
-        if not db_creator.create_db():
-            input('Ошибка соединения. Нажмите "ENTER')
+        db_manager = DBManager(**db)
         utils.clear_screen()
+        print("Попытка соединения...")
+        if not db_creator.create_db():
+            input('Ошибка соединения. Нажмите "ENTER"')
+        else:
+            message = f'Соединение с базой данных {config.get_server()["db_name"]} установлено'
+            print(message)
+            print('-' * len(message))
+            input('Нажмите "ENTER"')
 
 
 if __name__ == '__main__':
