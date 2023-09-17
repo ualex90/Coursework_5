@@ -1,14 +1,30 @@
 import psycopg2
 
+from src.data_base.db import DB
 
-class DBManager:
+
+class DBManager(DB):
+
+    def _request(self, instruction):
+        conn = self.connection()
+        response = dict()
+        if conn:
+            try:
+                with conn:
+                    with conn.cursor() as cursor:
+                        cursor.execute(instruction)
+                        response = cursor.fetchall()
+            finally:
+                conn.close()
+        return response
 
     def get_companies_and_vacancies_count(self):
         """
         Получает список всех компаний и количество вакансий
         у каждой компании
         """
-        pass
+        instruction = 'SELECT * FROM employers'
+        print(self._request(instruction))
 
     def get_all_vacancies(self):
         """
@@ -30,9 +46,10 @@ class DBManager:
         """
         pass
 
-    def get_vacancies_with_keyword(self):
+    def get_vacancies_with_keyword(self, keyword: str):
         """
-        Получает список всех вакансий, у которых зарплата выше
-        средней по всем вакансиям
+        Получает список всех вакансий, в названии которых содержатся
+        переданные в метод слова, например python
         """
         pass
+
