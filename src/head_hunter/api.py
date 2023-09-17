@@ -118,12 +118,27 @@ class HeadHunterAPI:
         # формирование табличных данных вакансий работодателя
         vacancies_tab = list()
         for vacancy in vacancies:
+            salary_from = None
+            salary_to = None
+            if vacancy.get('salary'):
+                if vacancy.get('salary').get('from') and vacancy.get('salary').get('to'):
+                    salary_from = int(vacancy.get('salary').get('from'))
+                    salary_to = int(vacancy.get('salary').get('to'))
+                elif vacancy.get('salary').get('from'):
+                    salary_from = int(vacancy.get('salary').get('from'))
+                    salary_to = salary_from
+                elif vacancy.get('salary').get('to'):
+                    salary_to = int(vacancy.get('salary').get('to'))
+                    salary_from = salary_to
+                else:
+                    salary_from = None
+                    salary_to = None
             vacancies_tab.append({'vacancy_id': int(vacancy.get('id')),
                                   'employer_id': int(employer.get('id')),
                                   'employer_name': vacancy.get('name'),
                                   'area': vacancy.get('area').get('name'),
-                                  'salary_from': vacancy.get('salary').get('from') if vacancy.get('salary') else None,
-                                  'salary_to': vacancy.get('salary').get('to') if vacancy.get('salary') else None,
+                                  'salary_from': salary_from,
+                                  'salary_to': salary_to,
                                   'currency': vacancy.get('salary').get('currency') if vacancy.get('salary') else None,
                                   'url': vacancy.get('url'),
                                   'requirement': vacancy.get('snippet').get('requirement'),
