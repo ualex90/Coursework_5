@@ -21,9 +21,9 @@ class DBManager(DB):
         Получает список всех компаний и количество вакансий
         у каждой компании
         """
-        instruction = ('SELECT employer_name, COUNT(*) '
-                       'FROM employers JOIN vacancies USING(employer_id) '
-                       'GROUP BY employer_name;')
+        instruction = ("SELECT employer_name, COUNT(*) "
+                       "FROM employers JOIN vacancies USING(employer_id) "
+                       "GROUP BY employer_name;")
         return self._request(instruction)
 
     def get_all_vacancies(self):
@@ -31,7 +31,13 @@ class DBManager(DB):
         Получает список всех вакансий с указанием названия компании,
         названия вакансии и зарплаты и ссылки на вакансию
         """
-        pass
+        instruction = ("SELECT vacancies.vacancy_name, employers.employer_name, "
+                       "CONCAT(vacancies.salary_to, ' ', vacancies.currency) AS salary, "
+                       "vacancies.url "
+                       "FROM vacancies "
+                       "JOIN employers USING(employer_id) "
+                       "ORDER BY vacancy_name;")
+        return self._request(instruction)
 
     def get_avg_salary(self):
         """

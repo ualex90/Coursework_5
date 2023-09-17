@@ -21,7 +21,9 @@ def ui_db_manager(utils: UIUtils, db_manager: DBManager):
                 columns = [('Работодатель', 52), ('Вакансии', 8)]
                 create_table(utils, columns, data)
             case '2':
-                pass
+                data = db_manager.get_all_vacancies()
+                columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 47)]
+                create_table(utils, columns, data)
             case '3':
                 pass
             case '4':
