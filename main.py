@@ -1,5 +1,6 @@
 from settings import USER, PASSWORD
 from src.data_base.db_creator import DBCreator
+from src.data_base.db_manager import DBManager
 from src.head_hunter.api import HeadHunterAPI
 from src.utils.config import Config
 from src.utils.file_manager import FileManager
@@ -66,3 +67,9 @@ db_creator = DBCreator('headhunter', USER, PASSWORD)  # Объект для со
 
 # # Заполнение таблиц данными
 # db_creator.fill_table(table_data)
+
+# -----------------------------------------Получение данных из базы-----------------------------------------------------
+
+db_manager = DBManager('headhunter', USER, PASSWORD)  # Объект для получения данных
+
+db_manager.get_companies_and_vacancies_count()
