@@ -12,6 +12,9 @@ class Config:
     def add_employers(self, data: dict) -> None:
         self.employers.update_file(data)
 
+    def save_employers(self, data: dict) -> None:
+        self.employers.save_file(data)
+
     def get_employers(self) -> dict:
         data = self.employers.load_file()
         if data is None:
