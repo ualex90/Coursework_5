@@ -54,7 +54,14 @@ class DBManager(DB):
         Получает список всех вакансий, у которых зарплата выше
         средней по всем вакансиям
         """
-        instruction = ("")
+        instruction = ("SELECT vacancies.vacancy_name, "
+                       "employers.employer_name, "
+                       "CONCAT(vacancies.salary_to, ' ', vacancies.currency) AS salary, "
+                       "vacancies.url "
+                       "FROM vacancies "
+                       "JOIN employers USING(employer_id) "
+                       "WHERE salary_to > (SELECT AVG(salary_to) FROM vacancies) "
+                       "ORDER BY salary_to DESC;")
         return self._request(instruction)
 
     def get_vacancies_with_keyword(self, keyword: str):
@@ -62,6 +69,13 @@ class DBManager(DB):
         Получает список всех вакансий, в названии которых содержатся
         переданные в метод слова, например python
         """
-        instruction = ("")
+        instruction = (f"SELECT vacancies.vacancy_name, "
+                       f"employers.employer_name, "
+                       f"CONCAT(vacancies.salary_to, ' ', vacancies.currency) AS salary, "
+                       f"vacancies.url "
+                       f"FROM vacancies "
+                       f"JOIN employers USING(employer_id) "
+                       f"WHERE vacancy_name ILIKE '%{keyword}%' "
+                       f"ORDER BY vacancy_name;")
         return self._request(instruction)
 
