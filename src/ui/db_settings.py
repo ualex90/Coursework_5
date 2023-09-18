@@ -5,15 +5,16 @@ from src.ui.ui_utils import UIUtils
 
 def db_settings(utils: UIUtils, db_creator: DBCreator, employers: dict, api: HeadHunterAPI):
     while True:
+
         menu_list = ['Создать таблицу "vacancies"',
                      'Создать таблицу "employers"',
                      'Очистить таблицу "vacancies"',
                      'Очистить таблицу "employers"',
                      'Удалить таблицу "vacancies"',
                      'Удалить таблицу "employers"',
-                     'Заполнить базу данных',
-                     'Назад']
+                     'Заполнить базу данных']
         [print(f"{i + 1}. {menu_list[i]}") for i in range(len(menu_list))]
+        print('\n(q): Назад в главное меню')
         match input('>> ').strip():
             case '1':
                 utils.clear_screen()
@@ -37,5 +38,8 @@ def db_settings(utils: UIUtils, db_creator: DBCreator, employers: dict, api: Hea
                 utils.clear_screen()
                 table_data = api.get_table_data(list(employers.values()))
                 db_creator.fill_table(table_data)
-            case '8':
+            case 'q':
                 return
+            case _:
+                utils.clear_screen()
+                print('Попробуйте еще раз. Необходимо ввести либо номер работодателя, либо (q) для выхода)\n')

@@ -29,9 +29,9 @@ def ui_main():
         menu_list = ['Подключение к базе данных',
                      'Управление базой данных',
                      'Список работодателей',
-                     'Запросы к базе данных',
-                     'Выход из программы']
+                     'Запросы к базе данных']
         [print(f"{i + 1}. {menu_list[i]}") for i in range(len(menu_list))]
+        print('\n(e): Выход из программы')
         match input('>> ').strip():
             case '1':
                 utils.clear_screen()
@@ -48,9 +48,11 @@ def ui_main():
                 utils.clear_screen()
                 connect_db(utils, config)
                 ui_db_manager(utils, db_manager)
-            case '5':
-                utils.clear_screen()
+            case 'e':
                 return
+            case _:
+                utils.clear_screen()
+                print('Попробуйте еще раз. Необходимо ввести либо номер работодателя, либо (q) для выхода)\n')
 
 
 def connect_db(utils: UIUtils, config: Config):

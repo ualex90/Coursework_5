@@ -41,7 +41,7 @@ def employers_list(utils: UIUtils, db_creator: DBCreator, config: Config, api: H
                 item = items[view_page * 10 + int(user_input)]
                 utils.clear_screen()
                 answer = input(f'Вы уверены что хотите удалить "{item}"? (y/n) ')
-                if answer.strip().lower() == 'y' or answer.strip().lower() == 'д' or answer.strip().lower() == '':
+                if answer.strip().lower() == 'y' or answer.strip().lower() == 'д':
                     del employers[item]
                     config.save_employers(employers)
             else:
@@ -57,6 +57,7 @@ def employers_list(utils: UIUtils, db_creator: DBCreator, config: Config, api: H
                 if data.get('name'):
                     employers.update({data['name']: data['id']})
             config.add_employers(employers)
+            utils.clear_screen()
         elif user_input == 'q':
             utils.clear_screen()
             config.add_employers(employers)
@@ -64,7 +65,7 @@ def employers_list(utils: UIUtils, db_creator: DBCreator, config: Config, api: H
                 return
             else:
                 answer = input(f'Записать изменения в базу данных (y/n) ')
-                if answer.strip().lower() == 'y' or answer.strip().lower() == 'д' or answer.strip().lower() == '':
+                if answer.strip().lower() == 'y' or answer.strip().lower() == 'д':
                     db_creator.create_db()
                     db_creator.truncate_table('vacancies')
                     db_creator.truncate_table('employers')
@@ -72,6 +73,8 @@ def employers_list(utils: UIUtils, db_creator: DBCreator, config: Config, api: H
                     db_creator.create_table('employers_table.yaml')
                     table_data = api.get_table_data(list(employers.values()))
                     db_creator.fill_table(table_data)
+                    return
+                else:
                     return
         elif user_input == 'z':
             utils.clear_screen()
