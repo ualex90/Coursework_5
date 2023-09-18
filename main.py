@@ -2,6 +2,7 @@ from settings import USER, PASSWORD
 from src.data_base.db_creator import DBCreator
 from src.data_base.db_manager import DBManager
 from src.head_hunter.api import HeadHunterAPI
+from src.ui.ui_main import ui_main
 from src.utils.config import Config
 from src.utils.file_manager import FileManager
 
@@ -72,4 +73,21 @@ db_creator = DBCreator('headhunter', USER, PASSWORD)  # Объект для со
 
 db_manager = DBManager('headhunter', USER, PASSWORD)  # Объект для получения данных
 
-db_manager.get_companies_and_vacancies_count()
+# # Получить список всех компаний и количество вакансий у каждой компании
+# print(db_manager.get_companies_and_vacancies_count())
+#
+# # Получает список всех вакансий с указанием названия компании, названия вакансии и зарплаты и ссылки на вакансию
+# print(db_manager.get_all_vacancies())
+#
+# # Получает среднюю зарплату по вакансиям
+# print(db_manager.get_avg_salary())
+#
+# # Получает список всех вакансий, у которых зарплата выше средней по всем вакансиям
+# print(db_manager.get_vacancies_with_higher_salary())
+#
+# # Получает список всех вакансий, в названии которых содержатся переданные в метод слова, например python
+# keyword = 'АСУ'
+# print(db_manager.get_vacancies_with_keyword(keyword))
+
+if __name__ == '__main__':
+    ui_main()
