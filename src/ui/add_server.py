@@ -9,7 +9,8 @@ def db_connect(utils: UIUtils, config: Config) -> dict:
 
     # получение данных сохраненного сервера
     if tuple(server.keys()) == ('host', 'port', 'user', 'password', 'db_name'):
-        answer = input(f'Подключиться к введенному ранее серверу "{server["host"]}:{server["port"]}"? (y/n) ')
+        answer = input(f'Подключиться к введенному ранее серверу "{server["host"]}:{server["port"]}, '
+                       f'{server["user"]}"? (y/n) ')
         if answer.strip().lower() == 'y' or answer.strip().lower() == 'д' or answer.strip().lower() == '':
             return server
 

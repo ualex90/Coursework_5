@@ -27,8 +27,8 @@ def ui_main():
         global db_manager
         utils.clear_screen()
         menu_list = ['Подключение к базе данных',
+                     'Редактировать списка работодателей',
                      'Управление базой данных',
-                     'Список работодателей',
                      'Запросы к базе данных']
         [print(f"{i + 1}. {menu_list[i]}") for i in range(len(menu_list))]
         print('\n(e): Выход из программы')
@@ -39,16 +39,17 @@ def ui_main():
             case '2':
                 utils.clear_screen()
                 connect_db(utils, config)
-                db_settings(utils, db_creator, employers, api)
+                employers_list(utils, db_creator, config, api)
             case '3':
                 utils.clear_screen()
                 connect_db(utils, config)
-                employers_list(utils, db_creator, config, api)
+                db_settings(utils, db_creator, employers, api)
             case '4':
                 utils.clear_screen()
                 connect_db(utils, config)
                 ui_db_manager(utils, db_manager)
             case 'e':
+                utils.clear_screen()
                 return
             case _:
                 utils.clear_screen()
