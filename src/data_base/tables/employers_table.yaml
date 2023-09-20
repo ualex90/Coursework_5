@@ -1,0 +1,24 @@
+name: 'employers'
+columns:
+  - 'name': 'employer_id'
+    'data_type': 'int'
+    'is_note_null': true
+    'constraints':
+      'name': 'pk_employer'
+      'type': 'primary_key'
+  - 'name': 'employer_name'
+    'data_type': 'varchar(100)'
+    'is_note_null': true
+    'constraints': null
+  - 'name': 'area'
+    'data_type': 'varchar(100)'
+    'is_note_null': false
+    'constraints': null
+  - 'name': 'site_url'
+    'data_type': 'varchar(100)'
+    'is_note_null': false
+    'constraints': null
+  - 'name': 'description'
+    'data_type': 'text'
+    'is_note_null': false
+    'constraints': null
