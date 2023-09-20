@@ -64,18 +64,7 @@ def employers_list(utils: UIUtils, db_creator: DBCreator, config: Config, api: H
             if employers_old == employers:
                 return
             else:
-                answer = input(f'Записать изменения в базу данных (y/n) ')
-                if answer.strip().lower() == 'y' or answer.strip().lower() == 'д':
-                    db_creator.create_db()
-                    db_creator.truncate_table('vacancies')
-                    db_creator.truncate_table('employers')
-                    db_creator.create_table('vacancies_table.yaml')
-                    db_creator.create_table('employers_table.yaml')
-                    table_data = api.get_table_data(list(employers.values()))
-                    db_creator.fill_table(table_data)
-                    return
-                else:
-                    return
+                return True
         elif user_input == 'z':
             utils.clear_screen()
             view_page -= 1 if view_page > 0 else view_page

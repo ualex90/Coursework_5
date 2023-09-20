@@ -1,3 +1,5 @@
+import psycopg2
+
 from src.data_base.db_manager import DBManager
 from src.ui.ui_utils import UIUtils
 
@@ -14,28 +16,58 @@ def ui_db_manager(utils: UIUtils, db_manager: DBManager):
         print('\n(q): Назад в главное меню')
         match input('>> ').strip():
             case '1':
-                data = db_manager.get_companies_and_vacancies_count()
-                columns = [('Работодатель', 52), ('Вакансии', 8)]
-                utils.create_table(columns, data)
+                try:
+                    data = db_manager.get_companies_and_vacancies_count()
+                except psycopg2.errors.UndefinedTable as er:
+                    utils.clear_screen()
+                    print(f'Таблица не существует. Попробуйте ее создать\n{er}')
+                    return True
+                else:
+                    columns = [('Работодатель', 52), ('Вакансии', 8)]
+                    utils.create_table(columns, data)
             case '2':
-                data = db_manager.get_all_vacancies()
-                columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
-                utils.create_table(columns, data)
+                try:
+                    data = db_manager.get_all_vacancies()
+                except psycopg2.errors.UndefinedTable as er:
+                    utils.clear_screen()
+                    print(f'Таблица не существует. Попробуйте ее создать\n{er}')
+                    return True
+                else:
+                    columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
+                    utils.create_table(columns, data)
             case '3':
-                data = db_manager.get_avg_salary()
-                columns = [('Средняя зарплата', 16)]
-                utils.create_table(columns, data)
+                try:
+                    data = db_manager.get_avg_salary()
+                except psycopg2.errors.UndefinedTable as er:
+                    utils.clear_screen()
+                    print(f'Таблица не существует. Попробуйте ее создать\n{er}')
+                    return True
+                else:
+                    columns = [('Средняя зарплата', 16)]
+                    utils.create_table(columns, data)
             case '4':
-                data = db_manager.get_vacancies_with_higher_salary()
-                columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
-                utils.create_table(columns, data)
+                try:
+                    data = db_manager.get_vacancies_with_higher_salary()
+                except psycopg2.errors.UndefinedTable as er:
+                    utils.clear_screen()
+                    print(f'Таблица не существует. Попробуйте ее создать\n{er}')
+                    return True
+                else:
+                    columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
+                    utils.create_table(columns, data)
             case '5':
                 utils.clear_screen()
                 print('Введите слово или фразу для поиска в названии вакансий')
                 keyword = input('>> ').strip()
-                data = db_manager.get_vacancies_with_keyword(keyword)
-                columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
-                utils.create_table(columns, data)
+                try:
+                    data = db_manager.get_vacancies_with_keyword(keyword)
+                except psycopg2.errors.UndefinedTable as er:
+                    utils.clear_screen()
+                    print(f'Таблица не существует. Попробуйте ее создать\n{er}')
+                    return True
+                else:
+                    columns = [('Вакансия', 35), ('Работодатель', 30), ('Зарплата', 12), ('Ссылка на HeadHunter', 30)]
+                    utils.create_table(columns, data)
             case 'q':
                 return
             case _:

@@ -8,18 +8,17 @@ from src.ui.ui_db_manager import ui_db_manager
 from src.ui.ui_utils import UIUtils
 from src.utils.config import Config
 
+# Создание объектов для работы с конфигурацией и утилитами UI
 db = dict()
 db_creator = DBCreator()
 db_manager = DBManager()
+api = HeadHunterAPI()
+config = Config()
+utils = UIUtils()
+employers = config.get_employers()
 
 
 def ui_main():
-    # Создание объектов для работы с конфигурацией и утилитами UI
-    config = Config()
-    utils = UIUtils()
-    employers = config.get_employers()
-    api = HeadHunterAPI()
-
     while True:
         # главное меню
         global db
@@ -35,19 +34,26 @@ def ui_main():
         match input('>> ').strip():
             case '1':
                 utils.clear_screen()
-                connect_db(utils, config)
+                connect_db()
+                utils.clear_screen()
             case '2':
                 utils.clear_screen()
-                connect_db(utils, config)
-                employers_list(utils, db_creator, config, api)
+                connect_db()
+                utils.clear_screen()
+                if employers_list(utils, db_creator, config, api):
+                    create_db()
             case '3':
                 utils.clear_screen()
-                connect_db(utils, config)
+                connect_db()
+                utils.clear_screen()
                 db_settings(utils, db_creator, employers, api)
             case '4':
                 utils.clear_screen()
-                connect_db(utils, config)
-                ui_db_manager(utils, db_manager)
+                connect_db()
+                utils.clear_screen()
+                if ui_db_manager(utils, db_manager):
+                    create_db()
+                    ui_db_manager(utils, db_manager)
             case 'e':
                 utils.clear_screen()
                 return
@@ -56,7 +62,7 @@ def ui_main():
                 print('Попробуйте еще раз. Необходимо ввести либо номер работодателя, либо (q) для выхода)\n')
 
 
-def connect_db(utils: UIUtils, config: Config):
+def connect_db():
     global db
     global db_creator
     global db_manager
@@ -73,6 +79,19 @@ def connect_db(utils: UIUtils, config: Config):
             print(message)
             print('-' * len(message))
             input('Нажмите "ENTER"')
+
+
+def create_db():
+    answer = input(f'Создать базу данных? (y/n) ')
+    if answer.strip().lower() == 'y' or answer.strip().lower() == 'д':
+        db_creator.create_db()
+        db_creator.truncate_table('employers')
+        db_creator.create_table('employers_table.yaml')
+        db_creator.truncate_table('vacancies')
+        db_creator.create_table('vacancies_table.yaml')
+        table_data = api.get_table_data(list(employers.values()))
+        db_creator.fill_table(table_data)
+        return
 
 
 if __name__ == '__main__':
