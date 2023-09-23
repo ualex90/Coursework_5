@@ -18,13 +18,15 @@ class HeadHunterAPI:
         """Поиск работодателей"""
         url = 'https://api.hh.ru/employers'
         params = {'text': text}
-        return self.data_request(url, params)
+        headers = {'User-Agent': 'HH-User-Agent'}
+        return self.data_request(url, params, headers)
 
     def get_employer_info(self, employer_id: str) -> dict:
         """Получение информации о работодателе"""
         url = f'https://api.hh.ru/employers/{employer_id}'
         params = {}
-        data = self.data_request(url, params)
+        headers = {'User-Agent': 'HH-User-Agent'}
+        data = self.data_request(url, params, headers)
         if data is None:
             return dict()
         return data
@@ -52,7 +54,8 @@ class HeadHunterAPI:
         params = {'employer_id': employer_id,
                   'per_page': per_page
                   }
-        response = self.data_request(url, params)
+        headers = {'User-Agent': 'HH-User-Agent'}
+        response = self.data_request(url, params, headers)
 
         # Определение максимального количества страниц
         if page_limit is None or page_limit > response.get('pages'):
